@@ -1,0 +1,18 @@
+{
+  "name": "kurento-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "node index.js localhost 8889",
+    "start": "node index.js localhost 80"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.0.0",
+    "blessed": "^0.1.81",
+    "kurento-client": "^6.5.0",
+    "moment": "^2.14.1"
+  }
+}
