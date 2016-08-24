@@ -92,7 +92,7 @@ function printPipelinesInfo(outputBox, pipelines) {
         `Total pipelines count: ${pipelines.length}`,
         `Real pipelines count: ${pipelines.length - leaks}`,
         `Leaks pipelines count: ${leaks}`,
-        `Current time: ${moment().format('h:mm:ss a, d MMM YYYY')}`
+        `Current time: ${moment().format('h:mm:ss a, D MMM YYYY')}`
     ].join('\n');
     screen.render();
 }
