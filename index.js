@@ -4,6 +4,7 @@ const async = require('async');
 const moment = require('moment');
 const monitor = require('./monitor');
 const blessed = require('blessed');
+const _ = require('lodash');
 
 const options = parseCommandLine();
 const screen = initScreen();
@@ -75,24 +76,50 @@ function updateAfterTime(outputBox) {
 }
 
 function printPipelinesInfo(outputBox, pipelines) {
-    let leaks = 0;
-    pipelines.forEach(aPipeline => {
-        const since = moment(aPipeline.creationTime, 'X');
-        const elapsedMs = Date.now() - aPipeline.creationTime * 1000;
-        const duration = moment.duration(elapsedMs, 'milliseconds');
+    pipelines.forEach(addLeakInfoToPipeline);
 
-        aPipeline.since = since;
-        aPipeline.duration = duration;
+    const realPipelines = pipelines.filter(p => !p.leak);
+    const leakPipelines = pipelines.filter(p => p.leak);
 
-        if (elapsedMs > 4 * 3600 * 1000)
-            leaks++;
+    outputBox.content = _.flattenDeep([
+        `Current time: ${moment().format('h:mm:ss a, D MMM YYYY')}`,
+        `Total pipelines count: ${pipelines.length}`,
+        `Real pipelines count: ${realPipelines.length}`,
+        renderNameList(realPipelines),
+        `Leaks pipelines count: ${leakPipelines.length}`,
+        renderNameList(leakPipelines)
+    ]).join('\n');
+    screen.render();
+}
+
+function addLeakInfoToPipeline(pipeline) {
+    const since = moment(pipeline.creationTime, 'X');
+    const elapsedMs = Date.now() - pipeline.creationTime * 1000;
+    const duration = moment.duration(elapsedMs, 'milliseconds');
+
+    pipeline.since = since;
+    pipeline.duration = duration;
+    pipeline.leak = elapsedMs > 4 * 3600 * 1000;
+}
+
+function renderNameList(pipelines) {
+    const projectPipelines = _.groupBy(pipelines, getProjectName);
+
+    return _.map(projectPipelines, renderProjectPipelineList);
+}
+
+function getProjectName(pipeline) {
+    const name = pipeline.name;
+    return name.split('__')[0];
+}
+
+function renderProjectPipelineList(pipelines, project) {
+    const pipelineList = pipelines.map(aPipeline => {
+        const name = aPipeline.name;
+        const created = aPipeline.since.format('h:mm:ss a, D MMM YYYY');
+
+        return `- ${name} (created ${created})`;
     });
 
-    outputBox.content = [
-        `Total pipelines count: ${pipelines.length}`,
-        `Real pipelines count: ${pipelines.length - leaks}`,
-        `Leaks pipelines count: ${leaks}`,
-        `Current time: ${moment().format('h:mm:ss a, D MMM YYYY')}`
-    ].join('\n');
-    screen.render();
+    return [project].concat(pipelineList);
 }

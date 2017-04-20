@@ -17,7 +17,8 @@ function fetchPipelines(host, port, callback) {
         saveRequestedObject('serverManager', objects),
         (done) => objects.serverManager.getPipelines(done),
         saveRequestedObject('pipelines', objects),
-        (done) => fetchTimeForPipelines(objects.pipelines, done)
+        (done) => fetchTimeForPipelines(objects.pipelines, done),
+        (done) => fetchNameForPipelines(objects.pipelines, done)
     ], function(error) {
         if (error)
             return callback(error);
@@ -46,6 +47,19 @@ function fetchTimeForPipelines(pipelines, callback) {
                     return done(error);
 
                 aPipeline.creationTime = time;
+                done();
+            });
+        }, callback);
+}
+
+function fetchNameForPipelines(pipelines, callback) {
+    async.eachSeries(pipelines,
+        (aPipeline, done) => {
+            aPipeline.getName((error, name) => {
+                if (error)
+                    return done(error);
+
+                aPipeline.name = name;
                 done();
             });
         }, callback);
