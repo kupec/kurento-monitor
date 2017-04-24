@@ -38,6 +38,7 @@ function createGUI() {
         },
         top: 0,
         left: 0,
+        scrollable: true,
         content: 'Waiting for kurento connection...'
     });
 
