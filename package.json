@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start:dev:autoremove": "node index.js localhost 8889 autoremove",
     "start:dev": "node index.js localhost 8889",
     "start": "node index.js localhost 80"
   },
