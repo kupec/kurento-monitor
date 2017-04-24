@@ -6,6 +6,8 @@ const monitor = require('./monitor');
 const blessed = require('blessed');
 const _ = require('lodash');
 
+const LEAK_TIMEOUT = 4 * 3600 * 1000;
+
 const options = parseCommandLine();
 const screen = initScreen();
 startApplication();
@@ -99,7 +101,7 @@ function addLeakInfoToPipeline(pipeline) {
 
     pipeline.since = since;
     pipeline.duration = duration;
-    pipeline.leak = elapsedMs > 4 * 3600 * 1000;
+    pipeline.leak = elapsedMs > LEAK_TIMEOUT;
 }
 
 function renderNameList(pipelines) {
@@ -117,8 +119,9 @@ function renderProjectPipelineList(pipelines, project) {
     const pipelineList = pipelines.map(aPipeline => {
         const name = aPipeline.name;
         const created = aPipeline.since.format('h:mm:ss a, D MMM YYYY');
+        const childs = aPipeline.childsLength;
 
-        return `- ${name} (created ${created})`;
+        return `- ${name} (created ${created}, childrens: ${childs})`;
     });
 
     return [project].concat(pipelineList);
