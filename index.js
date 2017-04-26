@@ -3,11 +3,15 @@
 const async = require('async');
 const moment = require('moment');
 const monitor = require('./monitor');
+const kurento = require('./kurento');
 const blessed = require('blessed');
 const _ = require('lodash');
 
+const LEAK_TIMEOUT = 4 * 3600 * 1000;
+
 const options = parseCommandLine();
 const screen = initScreen();
+let currentPipelines = [];
 startApplication();
 
 function startApplication() {
@@ -19,7 +23,8 @@ function parseCommandLine() {
     const args = process.argv.slice(2);
     return {
         host: args[0] || 'localhost',
-        port: args[1] || 8888
+        port: args[1] || 8888,
+        autoremove: args[2] === 'autoremove'
     };
 }
 
@@ -36,6 +41,7 @@ function createGUI() {
         },
         top: 0,
         left: 0,
+        scrollable: true,
         content: 'Waiting for kurento connection...'
     });
 
@@ -43,7 +49,7 @@ function createGUI() {
         height: 1,
         bottom: 0,
         left: 0,
-        content: 'Press q or ESC to exit'
+        content: 'Press q or ESC to exit   Press r to release unused pipelines'
     });
 
     screen.append(outputBox);
@@ -58,6 +64,10 @@ function runEventLoop(outputBox) {
         process.exit(0);
     });
 
+    outputBox.key(['r'], () => {
+        confirmReleasePipelines();
+    });
+
     updatePeriodically(outputBox);
 }
 
@@ -67,6 +77,7 @@ function updatePeriodically(outputBox) {
             return updateAfterTime(outputBox);
 
         printPipelinesInfo(outputBox, pipelines);
+        additionalActions();
         updateAfterTime(outputBox);
     });
 }
@@ -77,6 +88,7 @@ function updateAfterTime(outputBox) {
 
 function printPipelinesInfo(outputBox, pipelines) {
     pipelines.forEach(addLeakInfoToPipeline);
+    currentPipelines = pipelines;
 
     const realPipelines = pipelines.filter(p => !p.leak);
     const leakPipelines = pipelines.filter(p => p.leak);
@@ -99,7 +111,7 @@ function addLeakInfoToPipeline(pipeline) {
 
     pipeline.since = since;
     pipeline.duration = duration;
-    pipeline.leak = elapsedMs > 4 * 3600 * 1000;
+    pipeline.leak = elapsedMs > LEAK_TIMEOUT;
 }
 
 function renderNameList(pipelines) {
@@ -117,9 +129,40 @@ function renderProjectPipelineList(pipelines, project) {
     const pipelineList = pipelines.map(aPipeline => {
         const name = aPipeline.name;
         const created = aPipeline.since.format('h:mm:ss a, D MMM YYYY');
+        const childs = aPipeline.childsLength;
 
-        return `- ${name} (created ${created})`;
+        return `- ${name} (created ${created}, childrens: ${childs})`;
     });
 
     return [project].concat(pipelineList);
+}
+
+function additionalActions() {
+    if (options.autoremove) {
+        releaseLeakedAndEmptyPipelines();
+    }
+}
+
+function confirmReleasePipelines() {
+    const question = blessed.question({
+        parent: screen,
+        width: '30%',
+        height: '20%',
+        top: '40%',
+        left: '35%',
+        align: 'center',
+        border: 'line',
+        input: true,
+        keyable: true
+    });
+    question.ask('Are you sure you want to release leaked pipelines?', (error, answer) => {
+        if (answer) {
+            releaseLeakedAndEmptyPipelines();
+        }
+    });
+}
+
+function releaseLeakedAndEmptyPipelines() {
+    const leakedAndEmptyPipelines = currentPipelines.filter(p => p.leak && p.childsLength === 0);
+    kurento.releasePipelines(leakedAndEmptyPipelines);
 }

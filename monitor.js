@@ -18,8 +18,9 @@ function fetchPipelines(host, port, callback) {
         (done) => objects.serverManager.getPipelines(done),
         saveRequestedObject('pipelines', objects),
         (done) => fetchTimeForPipelines(objects.pipelines, done),
-        (done) => fetchNameForPipelines(objects.pipelines, done)
-    ], function(error) {
+        (done) => fetchNameForPipelines(objects.pipelines, done),
+        (done) => fetchLatencyStatsForPipelines(objects.pipelines, done)
+    ], function (error) {
         if (error)
             return callback(error);
 
@@ -41,7 +42,7 @@ function saveRequestedObject(key, heap) {
 
 function fetchTimeForPipelines(pipelines, callback) {
     async.eachSeries(pipelines,
-        function(aPipeline, done) {
+        (aPipeline, done) => {
             aPipeline.getCreationTime((error, time) => {
                 if (error)
                     return done(error);
@@ -60,6 +61,19 @@ function fetchNameForPipelines(pipelines, callback) {
                     return done(error);
 
                 aPipeline.name = name;
+                done();
+            });
+        }, callback);
+}
+
+function fetchLatencyStatsForPipelines(pipelines, callback) {
+    async.eachSeries(pipelines,
+        (aPipeline, done) => {
+            aPipeline.getChildren((error, childs) => {
+                if (error)
+                    return done(error);
+
+                aPipeline.childsLength = childs.length;
                 done();
             });
         }, callback);
