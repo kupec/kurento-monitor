@@ -1,0 +1,18 @@
+{
+  "name": "kurento-monitor",
+  "version": "1.2.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "node index.js",
+    "start": "node index.js"
+  },
+  "author": "kupec",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.2",
+    "kurento-client": "^6.6.0",
+    "moment": "^2.18.1",
+    "socket.io": "^1.7.3"
+  }
+}

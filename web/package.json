@@ -1,0 +1,23 @@
+{
+  "name": "kurento-monitor",
+  "version": "1.2.0",
+  "author": "kupec",
+  "license": "MIT",
+  "dependencies": {
+    "events": "^1.1.1",
+    "material-ui": "^0.17.4",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-tap-event-plugin": "^2.0.1",
+    "socket.io-client": "^1.7.3"
+  },
+  "devDependencies": {
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

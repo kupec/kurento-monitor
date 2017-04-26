@@ -1,63 +1,18 @@
-'use strict';
+const express = require('express');
+const path = require('path');
+const config = require('./config');
 
-const async = require('async');
-const moment = require('moment');
-const monitor = require('./monitor');
-const kurento = require('./kurento');
-const blessed = require('blessed');
-const _ = require('lodash');
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
-const LEAK_TIMEOUT = 4 * 3600 * 1000;
+const IOController = require('./controllers/io');
 
-const options = parseCommandLine();
-const screen = initScreen();
-let currentPipelines = [];
-startApplication();
+IOController.init(io);
+app.use(express.static(path.join(__dirname, '..', 'web', 'build')));
 
-function startApplication() {
-    const outputBox = createGUI(screen);
-    runEventLoop(outputBox);
-}
-
-function parseCommandLine() {
-    const args = process.argv.slice(2);
-    return {
-        host: args[0] || 'localhost',
-        port: args[1] || 8888,
-        autoremove: args[2] === 'autoremove'
-    };
-}
-
-function initScreen() {
-    return blessed.screen({smartCSR: true});
-}
-
-function createGUI() {
-    const outputBox = blessed.box({
-        width: '100%',
-        bottom: 1,
-        border: {
-            type: 'line'
-        },
-        top: 0,
-        left: 0,
-        scrollable: true,
-        content: 'Waiting for kurento connection...'
-    });
-
-    const bottomBar = blessed.box({
-        height: 1,
-        bottom: 0,
-        left: 0,
-        content: 'Press q or ESC to exit   Press r to release unused pipelines'
-    });
-
-    screen.append(outputBox);
-    screen.append(bottomBar);
-    screen.render();
-
-    return outputBox;
-}
+console.log(`server started on port ${config.port}`);
+server.listen(config.port);
 
 function runEventLoop(outputBox) {
     outputBox.key(['escape', 'q'], () => {
