@@ -3,13 +3,37 @@ import {KurentoUrl} from '../../components';
 
 import './Content.css';
 
+const VIEWS = {
+    kurentoUrl: 0,
+    mediaElementList: 1
+};
+
 class Content extends Component {
-    state = {};
+    state = {
+        view: VIEWS.kurentoUrl
+    };
+
+    switchView(view) {
+        this.setState(view);
+    }
+
+    resolveContent() {
+        const {view} = this.state;
+
+        const onMonitorStarted = this.switchView.bind(this, VIEWS.mediaElementList);
+        switch (view) {
+            case VIEWS.kurentoUrl:
+                return (<KurentoUrl onMonitorStarted={onMonitorStarted}/>);
+            default:
+                return (<div></div>);
+        }
+    }
 
     render() {
+        const content = this.resolveContent();
         return (
             <div>
-                <KurentoUrl />
+                {content}
             </div>
         );
     }

@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {TextField, FlatButton} from 'material-ui';
 import IOController from '../../controllers/io';
 import './KurentoUrl.css';
 
 class KurentoUrl extends Component {
+    static propTypes = {
+        onMonitorStarted: PropTypes.func.isRequired
+    };
+
     handleConnect() {
         const {kurentoUrl} = this.refs;
         const url = kurentoUrl.getValue().trim();
@@ -14,14 +19,16 @@ class KurentoUrl extends Component {
         if (error) {
             return null;
         }
-        console.log('monitor started');
+
+        const {onMonitorStarted} = this.props;
+        onMonitorStarted();
     }
 
     render() {
         return (
             <div className="kurentoUrlContainer">
                 <TextField ref="kurentoUrl" floatingLabelText="Kurento url"/>
-                <FlatButton onClick={this.handleConnect.bind(this)} label="Connect"/>
+                <FlatButton className="connectButton" onClick={this.handleConnect.bind(this)} label="Connect"/>
             </div>
         );
     }
