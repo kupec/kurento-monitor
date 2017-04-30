@@ -5,7 +5,7 @@ import './Header.css';
 class Header extends Component {
     render() {
         return (
-            <AppBar title="Kurento monitor"/>
+            <AppBar title="Kurento monitor" iconElementLeft={<span></span>}/>
         );
     }
 }

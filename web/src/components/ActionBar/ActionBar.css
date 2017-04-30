@@ -1,0 +1,15 @@
+.ActionBar {
+    transform: translateY(0);
+    opacity: 1;
+    height: 36px;
+    padding: 16px;
+    transition: transform 300ms ease, opacity 300ms ease, height 300ms ease, padding 300ms ease;
+}
+
+.ActionBar.hidden {
+    opacity: 0;
+    height: 0;
+    padding: 0 16px;
+    transform: translateY(-100%);
+    pointer-events: none;
+}

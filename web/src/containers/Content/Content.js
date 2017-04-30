@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {KurentoUrl} from '../../components';
+import {MediaElementList} from '..';
 
 import './Content.css';
 
@@ -14,7 +15,7 @@ class Content extends Component {
     };
 
     switchView(view) {
-        this.setState(view);
+        this.setState({view});
     }
 
     resolveContent() {
@@ -24,6 +25,8 @@ class Content extends Component {
         switch (view) {
             case VIEWS.kurentoUrl:
                 return (<KurentoUrl onMonitorStarted={onMonitorStarted}/>);
+            case VIEWS.mediaElementList:
+                return (<MediaElementList />);
             default:
                 return (<div></div>);
         }

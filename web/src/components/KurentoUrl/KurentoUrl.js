@@ -27,7 +27,7 @@ class KurentoUrl extends Component {
     render() {
         return (
             <div className="kurentoUrlContainer">
-                <TextField ref="kurentoUrl" floatingLabelText="Kurento url"/>
+                <TextField ref="kurentoUrl" floatingLabelText="Kurento url" defaultValue="ws://localhost:8888/kurento"/>
                 <FlatButton className="connectButton" onClick={this.handleConnect.bind(this)} label="Connect"/>
             </div>
         );

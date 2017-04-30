@@ -4,7 +4,7 @@ class MonitorRouter extends Router {
     constructor() {
         super();
         this.events = [
-            'monitor:start'
+            'kurento:release'
         ];
     }
 }
