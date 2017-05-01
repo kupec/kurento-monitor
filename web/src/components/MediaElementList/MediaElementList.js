@@ -18,7 +18,7 @@ class MediaElementList extends Component {
 
     renderMediaElementListItems(elements) {
         if (!elements) {
-            return null;
+            return [];
         }
         return elements.map((el, i) => {
             const nestedItems = this.renderMediaElementListItems(el.childrens);
@@ -47,6 +47,10 @@ class MediaElementList extends Component {
     render() {
         const {pipelines} = this.props;
         const mediaElementListItems = this.renderMediaElementListItems(pipelines);
+        const showComponent = mediaElementListItems.length > 0;
+        if (!showComponent) {
+            return null;
+        }
         return (
             <List>
                 <Subheader>Media elements:</Subheader>

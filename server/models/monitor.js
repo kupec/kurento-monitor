@@ -9,6 +9,7 @@ class Monitor {
     }
 
     start() {
+        this.tick();
         this._initInterval();
     }
 
@@ -20,6 +21,10 @@ class Monitor {
         const pipelines = await this.kurentoManager.getPipelines();
         const mediaPipelinesInfo = await this.getMediaElementsInfo(pipelines);
         this.socket.emit('monitor:pipelines', mediaPipelinesInfo);
+
+
+        const serverInfo = await this.getServerInfo();
+        this.socket.emit('monitor:serverInfo', serverInfo);
     }
 
     async getMediaElementsInfo(mediaElements) {
@@ -42,6 +47,16 @@ class Monitor {
             });
         }
         return result;
+    }
+
+    async getServerInfo() {
+        const info = await this.kurentoManager.getInfo();
+        const usedMemory = await this.kurentoManager.getUsedMemory();
+        return {
+            usedMemory,
+            version: info.version,
+            type: info.type
+        };
     }
 
     _initInterval() {

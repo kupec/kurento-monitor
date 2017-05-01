@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {KurentoUrl} from '../../components';
-import {MediaElementList} from '..';
+import {Monitor} from '..';
 
 import './Content.css';
 
 const VIEWS = {
     kurentoUrl: 0,
-    mediaElementList: 1
+    monitor: 1
 };
 
 class Content extends Component {
@@ -21,12 +21,12 @@ class Content extends Component {
     resolveContent() {
         const {view} = this.state;
 
-        const onMonitorStarted = this.switchView.bind(this, VIEWS.mediaElementList);
+        const onMonitorStarted = this.switchView.bind(this, VIEWS.monitor);
         switch (view) {
             case VIEWS.kurentoUrl:
                 return (<KurentoUrl onMonitorStarted={onMonitorStarted}/>);
-            case VIEWS.mediaElementList:
-                return (<MediaElementList />);
+            case VIEWS.monitor:
+                return (<Monitor />);
             default:
                 return (<div></div>);
         }
