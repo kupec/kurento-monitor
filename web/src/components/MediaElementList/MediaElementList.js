@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {List, ListItem, Subheader, Checkbox} from 'material-ui';
-import {subscribeIO} from '../common';
 import './MediaElementList.css';
 
-@subscribeIO({'monitor:pipelines': 'pipelines'})
 class MediaElementList extends Component {
     static propTypes = {
         pipelines: PropTypes.array,

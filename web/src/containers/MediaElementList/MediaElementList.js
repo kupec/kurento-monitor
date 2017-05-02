@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {MediaElementList, ActionBar} from '../../components';
+import {subscribeIO} from '../../components/common';
 import './MediaElementList.css';
 
+@subscribeIO({'monitor:pipelines': 'pipelines'})
 class MediaElementListContainer extends Component {
+    static propsTypes = {
+        pipelines: PropTypes.array
+    };
+
     state = {
         selectedItems: []
     };
@@ -23,11 +30,19 @@ class MediaElementListContainer extends Component {
     }
 
     render() {
+        const {pipelines} = this.props;
         const {selectedItems} = this.state;
         return (
             <div>
-                <ActionBar selectedItems={selectedItems} clearSelection={this.clearSelection.bind(this)}/>
-                <MediaElementList selectedItems={selectedItems} onElementChecked={this.onElementChecked.bind(this)}/>
+                <ActionBar
+                    selectedItems={selectedItems}
+                    clearSelection={this.clearSelection.bind(this)}
+                />
+                <MediaElementList
+                    selectedItems={selectedItems}
+                    onElementChecked={this.onElementChecked.bind(this)}
+                    pipelines={pipelines}
+                />
             </div>
         );
     }

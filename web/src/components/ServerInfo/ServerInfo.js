@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Subheader, Table, TableBody, TableRow, TableRowColumn} from 'material-ui';
-import {subscribeIO} from '../common';
 import './ServerInfo.css';
 
-@subscribeIO({'monitor:serverInfo': 'serverInfo'})
 class ServerInfo extends Component {
     static propsTypes = {
         serverInfo: PropTypes.object
@@ -15,7 +13,7 @@ class ServerInfo extends Component {
         if (!serverInfo) {
             return null;
         }
-        const usedMemory = parseInt(serverInfo.usedMemory / 1024);
+        const usedMemory = parseInt(serverInfo.usedMemory / 1024, 10);
         return (
             <div>
                 <Subheader>Server info:</Subheader>
