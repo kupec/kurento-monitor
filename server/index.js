@@ -11,7 +11,7 @@ const IOController = require('./controllers/io');
 IOController.init(io);
 app.use(express.static(path.join(__dirname, '..', 'web', 'build')));
 
-console.log(`server started on port ${config.port}`);
+// console.log(`server started on port ${config.port}`);
 server.listen(config.port);
 
 // function addLeakInfoToPipeline(pipeline) {

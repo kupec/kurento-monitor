@@ -3,8 +3,11 @@
   "version": "1.2.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=7.9.0"
+  },
   "scripts": {
-    "start:dev": "node index.js",
+    "lint": "./node_modules/.bin/eslint .",
     "start": "node index.js"
   },
   "author": "kupec",
@@ -14,5 +17,9 @@
     "kurento-client": "^6.6.0",
     "moment": "^2.18.1",
     "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-plugin-node": "^4.2.2"
   }
 }

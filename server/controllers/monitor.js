@@ -17,7 +17,7 @@ class MonitorController {
 
             callback();
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 

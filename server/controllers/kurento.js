@@ -28,7 +28,7 @@ class KurentoController {
             if (callback)
                 callback();
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 }
