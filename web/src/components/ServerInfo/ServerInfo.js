@@ -4,7 +4,7 @@ import {Subheader, Table, TableBody, TableRow, TableRowColumn} from 'material-ui
 import './ServerInfo.css';
 
 class ServerInfo extends Component {
-    static propsTypes = {
+    static propTypes = {
         serverInfo: PropTypes.object
     };
 

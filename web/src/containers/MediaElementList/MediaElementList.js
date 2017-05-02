@@ -6,7 +6,7 @@ import './MediaElementList.css';
 
 @subscribeIO({'monitor:pipelines': 'pipelines'})
 class MediaElementListContainer extends Component {
-    static propsTypes = {
+    static propTypes = {
         pipelines: PropTypes.array
     };
 

@@ -7,7 +7,7 @@ import './Monitor.css';
 
 @subscribeIO({'monitor:serverInfo': 'serverInfo'})
 class Monitor extends Component {
-    static propsTypes = {
+    static propTypes = {
         serverInfo: PropTypes.object
     };
 
