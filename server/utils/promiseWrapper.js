@@ -8,8 +8,8 @@ class Wrapper {
     }
 }
 
-function wrapPromise(promise) {
+function wrap(promise) {
     return promise.then(obj => new Wrapper(obj));
 }
 
-module.exports = wrapPromise;
+module.exports = {wrap, Wrapper};

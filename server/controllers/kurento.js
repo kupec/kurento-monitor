@@ -1,7 +1,7 @@
 const KurentoClient = require('kurento-client');
 const KurentoConnectionSource = require('../sources/kurentoConnection');
 
-const wrap = require('../utils/promiseWrapper');
+const {wrap} = require('../utils/promiseWrapper');
 
 const CLIENT_OPTIONS = {failAfter: 3};
 
