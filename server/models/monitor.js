@@ -2,9 +2,9 @@ const time = require('../utils/time');
 const MONITOR_INTERVAL = 1000;
 
 class Monitor {
-    constructor(socket, manager) {
+    constructor(socket, kurentoManager) {
         this.socket = socket;
-        this.kurentoManager = manager.kurentoManager;
+        this.kurentoManager = kurentoManager;
         this.monitorInterval = null;
     }
 

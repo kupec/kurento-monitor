@@ -9,10 +9,10 @@ class MonitorController {
             const {url} = data;
 
             const connection = await KurentoController.connect(url);
-            const manager = await KurentoController.getServerManager(connection.kurentoConnection);
-            const monitor = new Monitor(socket, manager);
+            const manager = await KurentoController.getServerManager(connection.get());
+            const monitor = new Monitor(socket, manager.get());
             MonitorsSource.add(socket, monitor);
-            KurentoConnectionSource.add(socket, connection.kurentoConnection);
+            KurentoConnectionSource.add(socket, connection.get());
             monitor.start();
 
             callback();

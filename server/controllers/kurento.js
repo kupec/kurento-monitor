@@ -1,19 +1,17 @@
 const KurentoClient = require('kurento-client');
-const KurentoManager = require('../models/kurentoManager');
-const KurentoConnection = require('../models/kurentoConnection');
 const KurentoConnectionSource = require('../sources/kurentoConnection');
+
+const wrap = require('../utils/promiseWrapper');
 
 const CLIENT_OPTIONS = {failAfter: 3};
 
 class KurentoController {
     connect(url) {
-        return KurentoClient(url, CLIENT_OPTIONS)
-            .then(c => new KurentoConnection(c));
+        return wrap(KurentoClient(url, CLIENT_OPTIONS));
     }
 
     getServerManager(kurentoConnection) {
-        return kurentoConnection.getServerManager()
-            .then(m => new KurentoManager(m));
+        return wrap(kurentoConnection.getServerManager());
     }
 
     async release(socket, data, callback) {
