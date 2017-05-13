@@ -19,12 +19,9 @@ class KurentoController {
             const {elements} = data;
             const kurentoConnection = KurentoConnectionSource.get(socket);
 
-            for (let i = 0; i < elements.length; i++) {
-                kurentoConnection.getMediaobjectById(elements[i]).then(e => e && e.release());
-            }
+            elements.forEach(element => kurentoConnection.getMediaobjectById(element).then(e => e && e.release()));
 
-            if (callback)
-                callback();
+            callback && callback();
         } catch (err) {
             // console.log(err);
         }

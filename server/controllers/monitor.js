@@ -15,7 +15,7 @@ class MonitorController {
             KurentoConnectionSource.add(socket, connection.get());
             monitor.start();
 
-            callback();
+            callback && callback();
         } catch (err) {
             // console.log(err);
         }
