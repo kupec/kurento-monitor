@@ -25,10 +25,16 @@ class MediaElementListItem extends Component {
                 Name: {element.name}
             </p>
         );
+        const primaryText = (
+            <span>
+                {element.type}
+                {element.leaked && <span className="leakedNotification">&nbsp;(possible leaked)</span>}
+            </span>
+        );
         return (
             <div className={nestedClassName}>
                 <ListItem
-                    primaryText={element.type}
+                    primaryText={primaryText}
                     autoGenerateNestedIndicator={true}
                     leftCheckbox={leftCheckBox}
                     secondaryText={secondaryText}

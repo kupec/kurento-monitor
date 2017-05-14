@@ -1,3 +1,8 @@
 .nested {
     padding-left: 8px;
 }
+
+.leakedNotification {
+    font-size: 12px;
+    color: #F44336;
+}
