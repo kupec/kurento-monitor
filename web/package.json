@@ -1,6 +1,8 @@
 {
   "name": "kurento-monitor",
   "version": "1.2.0",
+  "description": "Kurento monitoring tool",
+  "repository": "https://github.com/kupec/kurento-monitor.git",
   "author": "kupec",
   "license": "MIT",
   "dependencies": {

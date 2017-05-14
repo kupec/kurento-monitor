@@ -1,7 +1,10 @@
 {
   "name": "kurento-monitor",
   "version": "1.2.0",
-  "description": "",
+  "description": "Kurento monitoring tool",
+  "repository": "https://github.com/kupec/kurento-monitor.git",
+  "author": "kupec",
+  "license": "MIT",
   "main": "index.js",
   "engines": {
     "node": ">=7.9.0"
@@ -12,8 +15,6 @@
     "start:dev": "DEBUG=app:* node index.js",
     "start": "node index.js"
   },
-  "author": "kupec",
-  "license": "MIT",
   "dependencies": {
     "debug": "^2.6.6",
     "express": "^4.15.2",
