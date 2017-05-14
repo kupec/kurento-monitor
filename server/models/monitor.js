@@ -1,6 +1,7 @@
 const time = require('../utils/time');
 const EventEmitter = require('events').EventEmitter;
 const MONITOR_TIMEOUT = 1000;
+const LEAK_TIMEOUT = 4 * 3600 * 1000;
 const STATES = {running: 0, stopped: 1};
 
 class Monitor extends EventEmitter {
@@ -52,6 +53,7 @@ class Monitor extends EventEmitter {
                 childrens,
                 type,
                 creationTime: time.getHumanTime(creationTime * 1000),
+                leaked: time.isTimeBeforeNow(creationTime * 1000, LEAK_TIMEOUT),
                 id: mediaElement.id
             });
         }
