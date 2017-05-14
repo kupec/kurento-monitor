@@ -6,7 +6,8 @@ const patch = wildcard(io.Manager);
 
 class IOController extends EventEmitter {
     init() {
-        this.socket = io('ws://localhost:3000');
+        const serverUrl = process.env.NODE_ENV === 'production' ? location.origin : 'http://localhost:3000';
+        this.socket = io(serverUrl);
         patch(this.socket);
         this.socket.on('connect', () => {
             this.emit('connected');

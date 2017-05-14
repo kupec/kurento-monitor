@@ -10,9 +10,12 @@ class MonitorController {
 
             const connection = await KurentoController.connect(url);
             const manager = await KurentoController.getServerManager(connection.get());
-            const monitor = new Monitor(socket, manager.get());
+            const monitor = new Monitor(manager.get());
             MonitorsSource.add(socket, monitor);
             KurentoConnectionSource.add(socket, connection.get());
+
+            monitor.on('pipelines', pipelinesInfo => socket.emit('monitor:pipelines', pipelinesInfo));
+            monitor.on('serverInfo', serverInfo => socket.emit('monitor:serverInfo', serverInfo));
             monitor.start();
 
             callback && callback();
