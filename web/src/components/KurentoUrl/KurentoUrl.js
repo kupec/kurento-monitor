@@ -9,6 +9,13 @@ class KurentoUrl extends Component {
         onMonitorStarted: PropTypes.func.isRequired
     };
 
+    handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            this.handleConnect();
+        }
+    }
+
     handleConnect() {
         const {kurentoUrl} = this.refs;
         const url = kurentoUrl.getValue().trim();
@@ -27,8 +34,13 @@ class KurentoUrl extends Component {
     render() {
         return (
             <div className="kurentoUrlContainer">
-                <TextField ref="kurentoUrl" floatingLabelText="Kurento url" defaultValue="ws://localhost:8888/kurento"/>
-                <FlatButton className="connectButton" onClick={this.handleConnect.bind(this)} label="Connect"/>
+                <TextField ref="kurentoUrl"
+                           floatingLabelText="Kurento url"
+                           defaultValue="ws://localhost:8888/kurento"
+                           onKeyPress={this.handleKeyPress.bind(this)}/>
+                <FlatButton className="connectButton"
+                            onClick={this.handleConnect.bind(this)}
+                            label="Connect"/>
             </div>
         );
     }
