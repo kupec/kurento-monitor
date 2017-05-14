@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {MediaElementList, ActionBar} from '../../components';
 import {subscribeIO} from '../../components/common';
+import {getAllElementIds} from '../../helpers/pipelines';
 import './MediaElementList.css';
 
 @subscribeIO({'monitor:pipelines': 'pipelines'})
@@ -11,22 +12,44 @@ class MediaElementListContainer extends Component {
     };
 
     state = {
-        selectedItems: []
+        selectedItems: [],
+        allChecked: false
     };
 
     clearSelection() {
-        this.setState({selectedItems: []});
+        this.setState({selectedItems: [], allChecked: false});
     }
 
     onElementChecked(id, state) {
-        const {selectedItems} = this.state;
+        const {pipelines} = this.props;
+        const {allChecked, selectedItems} = id === 'all'
+            ? this.onSelectAll(state, pipelines)
+            : this.onSelectOneItem(this.state.selectedItems, id, state);
+
+        this.setState({selectedItems, allChecked});
+    }
+
+    onSelectAll(state, pipelines) {
+        let allChecked, selectedItems;
+        if (state) {
+            allChecked = true;
+            selectedItems = getAllElementIds(pipelines);
+        } else {
+            allChecked = false;
+            selectedItems = [];
+        }
+        return {allChecked, selectedItems};
+    }
+
+    onSelectOneItem(selectedItems, id, state) {
+        let allChecked = false;
         if (state) {
             selectedItems.push(id);
         } else {
             const index = selectedItems.indexOf(id);
             selectedItems.splice(index, 1);
         }
-        this.setState({selectedItems});
+        return {allChecked, selectedItems};
     }
 
     render() {

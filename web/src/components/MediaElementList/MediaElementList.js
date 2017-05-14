@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {List, ListItem, Subheader, Checkbox} from 'material-ui';
+import {List, Subheader} from 'material-ui';
+import MediaElementListItem from './MediaElementListItem';
+import SelectAllCheckbox from './SelectAllCheckbox';
 import './MediaElementList.css';
 
 class MediaElementList extends Component {
@@ -10,35 +12,22 @@ class MediaElementList extends Component {
         selectedItems: PropTypes.array.isRequired
     };
 
-    onElementChecked(id, event, state) {
-        this.props.onElementChecked(id, state);
+    onSelectAll(event, checked) {
+        this.props.onElementChecked('all', checked);
     }
 
-    renderMediaElementListItems(elements) {
+    renderMediaElementListItems(elements, nestedClassName) {
         if (!elements) {
             return [];
         }
+        const {selectedItems, onElementChecked} = this.props;
         return elements.map((el, i) => {
-            const nestedItems = this.renderMediaElementListItems(el.childrens);
-            const isChecked = this.props.selectedItems.indexOf(el.id) > -1;
-            const leftCheckBox = (<Checkbox checked={isChecked} onCheck={this.onElementChecked.bind(this, el.id)}/>);
-            const secondaryText = (
-                <p>
-                    Created at: {el.creationTime}<br />
-                    Name: {el.name}
-                </p>
-            );
-            return (
-                <ListItem
-                    key={i}
-                    primaryText={el.type}
-                    autoGenerateNestedIndicator={true}
-                    leftCheckbox={leftCheckBox}
-                    secondaryText={secondaryText}
-                    secondaryTextLines={2}
-                    nestedItems={nestedItems}
-                />
-            );
+            return <MediaElementListItem key={i}
+                                         element={el}
+                                         nestedClassName={nestedClassName}
+                                         selectedItems={selectedItems}
+                                         onElementChecked={onElementChecked}
+                                         nestedItems={this.renderMediaElementListItems(el.childrens, 'nested')}/>;
         });
     }
 
@@ -52,6 +41,7 @@ class MediaElementList extends Component {
         return (
             <List>
                 <Subheader>Media elements:</Subheader>
+                <SelectAllCheckbox onCheck={this.onSelectAll.bind(this)}/>
                 {mediaElementListItems}
             </List>
         );

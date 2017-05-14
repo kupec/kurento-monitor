@@ -1,24 +1,32 @@
 const time = require('../utils/time');
 const EventEmitter = require('events').EventEmitter;
-const MONITOR_INTERVAL = 1000;
+const MONITOR_TIMEOUT = 1000;
+const STATES = {running: 0, stopped: 1};
 
 class Monitor extends EventEmitter {
     constructor(kurentoManager) {
         super();
         this.kurentoManager = kurentoManager;
-        this.monitorInterval = null;
+        this.state = STATES.running;
     }
 
     start() {
         this.tick();
-        this._initInterval();
     }
 
     stop() {
-        this._stopInterval();
+        this.state = STATES.stopped;
     }
 
     async tick() {
+        if (this.state === STATES.stopped) {
+            return;
+        }
+        await this.getMonitoringData();
+        setTimeout(() => this.tick(), MONITOR_TIMEOUT);
+    }
+
+    async getMonitoringData() {
         const pipelines = await this.kurentoManager.getPipelines();
         const mediaPipelinesInfo = await this.getMediaElementsInfo(pipelines);
         this.emit('pipelines', mediaPipelinesInfo);
@@ -58,14 +66,6 @@ class Monitor extends EventEmitter {
             version: info.version,
             type: info.type
         };
-    }
-
-    _initInterval() {
-        this.monitorInterval = setInterval(() => this.tick(), MONITOR_INTERVAL);
-    }
-
-    _stopInterval() {
-        clearInterval(this.monitorInterval);
     }
 }
 
