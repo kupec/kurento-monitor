@@ -1,9 +1,10 @@
 const time = require('../utils/time');
+const EventEmitter = require('events').EventEmitter;
 const MONITOR_INTERVAL = 1000;
 
-class Monitor {
-    constructor(socket, kurentoManager) {
-        this.socket = socket;
+class Monitor extends EventEmitter {
+    constructor(kurentoManager) {
+        super();
         this.kurentoManager = kurentoManager;
         this.monitorInterval = null;
     }
@@ -20,11 +21,11 @@ class Monitor {
     async tick() {
         const pipelines = await this.kurentoManager.getPipelines();
         const mediaPipelinesInfo = await this.getMediaElementsInfo(pipelines);
-        this.socket.emit('monitor:pipelines', mediaPipelinesInfo);
+        this.emit('pipelines', mediaPipelinesInfo);
 
 
         const serverInfo = await this.getServerInfo();
-        this.socket.emit('monitor:serverInfo', serverInfo);
+        this.emit('serverInfo', serverInfo);
     }
 
     async getMediaElementsInfo(mediaElements) {
