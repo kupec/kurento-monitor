@@ -1,3 +1,23 @@
+.topMediaElementsBar {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.searchBar .searchBarIcon {
+    padding-right: 4px;
+}
+
+.searchBar .searchBarField {
+    width: 100% !important;
+}
+
 .nested {
     padding-left: 8px;
 }
@@ -5,4 +25,8 @@
 .leakedNotification {
     font-size: 12px;
     color: #F44336;
+}
+
+.secondaryText .formattedName span {
+    background-color: #FFF176;
 }

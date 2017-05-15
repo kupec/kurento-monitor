@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {MediaElementList, ActionBar} from '../../components';
 import {subscribeIO} from '../../components/common';
-import {getAllElementIds} from '../../helpers/pipelines';
+import {onSelectAll, onSelectOneItem} from './MediaElementSelection';
 import './MediaElementList.css';
 
 @subscribeIO({'monitor:pipelines': 'pipelines'})
@@ -13,7 +13,8 @@ class MediaElementListContainer extends Component {
 
     state = {
         selectedItems: [],
-        allChecked: false
+        allChecked: false,
+        regexp: new RegExp('.*', 'gi')
     };
 
     clearSelection() {
@@ -23,38 +24,20 @@ class MediaElementListContainer extends Component {
     onElementChecked(id, state) {
         const {pipelines} = this.props;
         const {allChecked, selectedItems} = id === 'all'
-            ? this.onSelectAll(state, pipelines)
-            : this.onSelectOneItem(this.state.selectedItems, id, state);
+            ? onSelectAll(state, pipelines)
+            : onSelectOneItem(this.state.selectedItems, id, state);
 
         this.setState({selectedItems, allChecked});
     }
 
-    onSelectAll(state, pipelines) {
-        let allChecked, selectedItems;
-        if (state) {
-            allChecked = true;
-            selectedItems = getAllElementIds(pipelines);
-        } else {
-            allChecked = false;
-            selectedItems = [];
-        }
-        return {allChecked, selectedItems};
-    }
-
-    onSelectOneItem(selectedItems, id, state) {
-        let allChecked = false;
-        if (state) {
-            selectedItems.push(id);
-        } else {
-            const index = selectedItems.indexOf(id);
-            selectedItems.splice(index, 1);
-        }
-        return {allChecked, selectedItems};
+    onSearchChange(newValue) {
+        const regexp = new RegExp(newValue || '.*', 'gi');
+        this.setState({regexp, selectedItems: []});
     }
 
     render() {
         const {pipelines} = this.props;
-        const {selectedItems} = this.state;
+        const {selectedItems, regexp} = this.state;
         return (
             <div>
                 <ActionBar
@@ -64,7 +47,9 @@ class MediaElementListContainer extends Component {
                 <MediaElementList
                     selectedItems={selectedItems}
                     onElementChecked={this.onElementChecked.bind(this)}
+                    onSearchChange={this.onSearchChange.bind(this)}
                     pipelines={pipelines}
+                    regexp={regexp}
                 />
             </div>
         );
