@@ -4,6 +4,8 @@ This is real time kurento media eliments monitoring tool.
 Bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ![selection](https://cloud.githubusercontent.com/assets/13744473/26036763/9a1dabe8-38ec-11e7-89cd-3d98e60cf98c.png)
+## Live demo
+https://kurento-monitor.herokuapp.com/
 ## How to use?
 1) Clone this project
 2) Install deps for frontend and build it: `cd web && npm i && npm run build`
