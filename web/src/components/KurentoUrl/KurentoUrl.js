@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {TextField, FlatButton} from 'material-ui';
-import IOController from '../../controllers/io';
 import './KurentoUrl.css';
 
 class KurentoUrl extends Component {
     static propTypes = {
-        onMonitorStarted: PropTypes.func.isRequired
+        handleConnect: PropTypes.func.isRequired
     };
 
     handleKeyPress(event) {
@@ -17,18 +16,10 @@ class KurentoUrl extends Component {
     }
 
     handleConnect() {
+        const {handleConnect} = this.props;
         const {kurentoUrl} = this.refs;
         const url = kurentoUrl.getValue().trim();
-        IOController.send('monitor:start', {url}, this.onMonitorStarted.bind(this));
-    }
-
-    onMonitorStarted(error) {
-        if (error) {
-            return null;
-        }
-
-        const {onMonitorStarted} = this.props;
-        onMonitorStarted();
+        handleConnect(url);
     }
 
     render() {
