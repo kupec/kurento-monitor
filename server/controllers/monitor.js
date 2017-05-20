@@ -8,7 +8,15 @@ class MonitorController {
         try {
             const {url} = data;
 
-            const connection = await KurentoController.connect(url);
+            const connection = await KurentoController.connect(url, err => {
+                socket.emit('app:error', {message: err})
+            });
+
+            const existedMonitor = MonitorsSource.get(socket);
+            if (existedMonitor) {
+                this.releaseMonitor(existedMonitor, socket);
+            }
+
             const manager = await KurentoController.getServerManager(connection.get());
             const monitor = new Monitor(manager.get());
             MonitorsSource.add(socket, monitor);
@@ -20,17 +28,21 @@ class MonitorController {
 
             callback && callback();
         } catch (err) {
-            // console.log(err);
+            console.log(err);
         }
     }
 
     async disconnect(socket) {
         const monitor = MonitorsSource.get(socket);
         if (monitor) {
-            monitor.stop();
-            MonitorsSource.remove(socket);
-            KurentoConnectionSource.remove(socket);
+            this.releaseMonitor(monitor, socket);
         }
+    }
+
+    releaseMonitor(monitor, socket) {
+        monitor.stop();
+        MonitorsSource.remove(socket);
+        KurentoConnectionSource.remove(socket);
     }
 }
 

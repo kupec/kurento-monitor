@@ -3,11 +3,20 @@ const KurentoConnectionSource = require('../sources/kurentoConnection');
 
 const {wrap} = require('../utils/promiseWrapper');
 
-const CLIENT_OPTIONS = {failAfter: 3};
+const MAX_ATTEMTPS = 5;
 
 class KurentoController {
-    connect(url) {
-        return wrap(KurentoClient(url, CLIENT_OPTIONS));
+    async connect(url, errorCallback) {
+        let attempts = 0;
+        const client = await wrap(KurentoClient(url));
+        client.get()._re.on('reconnect', () => {
+            if (attempts >= MAX_ATTEMTPS) {
+                return client.get().close();
+            }
+            attempts++;
+            errorCallback(`can\'t connect to kurento ${url}`);
+        });
+        return client;
     }
 
     getServerManager(kurentoConnection) {

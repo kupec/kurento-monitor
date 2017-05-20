@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Header} from '../../components';
-import Content from '../Content/Content';
+import {Content, ServerErrors} from '..';
 
 import IOController from '../../controllers/io';
 import './App.css';
@@ -17,6 +17,7 @@ class App extends Component {
                 <div className="app">
                     <Header />
                     <Content />
+                    <ServerErrors />
                 </div>
             </MuiThemeProvider>
         );
