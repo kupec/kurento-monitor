@@ -1,0 +1,22 @@
+{
+  "name": "kurento-monitor",
+  "version": "1.2.0",
+  "description": "Kurento monitoring tool",
+  "repository": "https://github.com/kupec/kurento-monitor.git",
+  "author": "kupec",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": "7.9.x"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server",
+    "heroku-prebuild": "cd server && npm install",
+    "heroku-postbuild": "cd web/ && npm install --only=dev && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "server/node_modules",
+    "react-ui/node_modules"
+  ]
+}
