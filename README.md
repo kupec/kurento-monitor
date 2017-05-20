@@ -1,25 +1,12 @@
-# Kurento monitor #
+# Kurento monitor
+This is real time kurento media eliments monitoring tool.
 
-Monitor of kurento media pipelines
+Bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-![kurento-monitor](https://cloud.githubusercontent.com/assets/15513933/26028169/6ec689e8-3823-11e7-9915-0398b7ef8ffa.png)
+![selection](https://cloud.githubusercontent.com/assets/13744473/26036763/9a1dabe8-38ec-11e7-89cd-3d98e60cf98c.png)
+## How to use?
+1) Clone this project
+2) Install deps for frontend and build it: `cd web && npm i && npm run build`
+3) Install deps for backend and run server: `cd server && npm i && npm run start`
 
-## How to use it? ##
-
-Clone project and run:
-
-```
-npm install
-node index.js HOST PORT
-```
-
-where `HOST`,`PORT` is the kurento websocket ip/port
-
-## Pipeline names ##
-
-Monitor can group pipelines by project name. The part of pipeline name before `__` is used as project name. For example, in *foobar* project you should add such line:
-
-```
-pipeline.setName('foobar__' + userId);
-```
-
+Then monitor will be available on localhost:3000

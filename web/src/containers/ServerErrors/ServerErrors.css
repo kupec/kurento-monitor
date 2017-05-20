@@ -1,0 +1,11 @@
+.MonitorErrorsContainer {
+    position: absolute;
+    bottom: 0;
+    right: 1rem;
+    padding: 1rem;
+    background-color: #00BCD4;
+    color: #B71C1C;
+    opacity: 0.7;
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}

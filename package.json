@@ -1,19 +1,22 @@
 {
   "name": "kurento-monitor",
   "version": "1.2.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start:dev:autoremove": "node index.js localhost 8889 autoremove",
-    "start:dev": "node index.js localhost 8889",
-    "start": "node index.js localhost 80"
+  "description": "Kurento monitoring tool",
+  "repository": "https://github.com/kupec/kurento-monitor.git",
+  "author": "kupec",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": "7.9.x"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "async": "^2.0.0",
-    "blessed": "^0.1.81",
-    "kurento-client": "^6.5.0",
-    "moment": "^2.14.1"
-  }
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server",
+    "heroku-prebuild": "cd server && npm install",
+    "heroku-postbuild": "cd web/ && npm install --only=dev && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "server/node_modules",
+    "react-ui/node_modules"
+  ]
 }

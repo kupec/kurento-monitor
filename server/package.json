@@ -1,0 +1,31 @@
+{
+  "name": "kurento-monitor",
+  "version": "1.2.0",
+  "description": "Kurento monitoring tool",
+  "repository": "https://github.com/kupec/kurento-monitor.git",
+  "author": "kupec",
+  "license": "MIT",
+  "main": "index.js",
+  "engines": {
+    "node": ">=7.9.0"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha -s 0 --recursive",
+    "lint": "./node_modules/.bin/eslint .",
+    "start:dev": "DEBUG=app:* node index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "debug": "^2.6.6",
+    "express": "^4.15.2",
+    "kurento-client": "^6.6.0",
+    "moment": "^2.18.1",
+    "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.19.0",
+    "eslint-plugin-node": "^4.2.2",
+    "mocha": "^3.3.0"
+  }
+}

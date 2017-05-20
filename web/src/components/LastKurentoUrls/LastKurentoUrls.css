@@ -1,0 +1,14 @@
+.LastKurentoUrlsContainer {
+    padding-top: 2rem;
+    text-align: center;
+}
+
+.LastKurentoUrlsContainer div {
+    cursor: pointer;
+    color: #448AFF;
+}
+
+.LastKurentoUrlsContainer .LastConnectedSubheader {
+    padding-left: 0 !important;
+    line-height: 24px !important;
+}
