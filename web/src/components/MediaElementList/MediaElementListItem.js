@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {ListItem, Checkbox} from 'material-ui';
 import {inNonStandartRegExp} from './PipelinesFiltering';
+const MEDIA_PIPELINE_NAME = 'MediaPipeline';
 
 class MediaElementListItem extends Component {
     static propTypes = {
@@ -13,6 +14,26 @@ class MediaElementListItem extends Component {
         regexp: PropTypes.any,
         expended: PropTypes.bool
     };
+
+    static getChildrenInfo(element) {
+        if (!element || element.type !== MEDIA_PIPELINE_NAME) return '';
+        let result = ': children - ';
+        if (!element.childrens || element.childrens.length === 0) return result + '0';
+        const childrenTypes = {};
+        element.childrens.forEach(child => {
+          if (!childrenTypes[child.type]) {
+              childrenTypes[child.type] = 1;
+          }  else {
+              childrenTypes[child.type] += 1;
+          }
+        });
+        result += element.childrens.length;
+        const typesNames = Object.keys(childrenTypes);
+        typesNames.forEach(type => {
+            result += `, ${type} - ${childrenTypes[type]}`;
+        });
+        return result;
+    }
 
     onElementChecked(id, event, state) {
         this.props.onElementChecked(id, state);
@@ -31,9 +52,10 @@ class MediaElementListItem extends Component {
                 Name: <span className="formattedName" dangerouslySetInnerHTML={{__html: formattedName}}/>
             </p>
         );
+        const childrenInfo = MediaElementListItem.getChildrenInfo(element);
         const primaryText = (
             <span>
-                {element.type}
+                {`${element.type}${childrenInfo}`}
                 {element.leaked && <span className="leakedNotification">&nbsp;(possible leaked)</span>}
             </span>
         );
