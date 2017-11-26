@@ -35,6 +35,20 @@ class KurentoController {
             // console.log(err);
         }
     }
+
+    async getSources(socket, data, callback) {
+        try {
+            const {elements} = data;
+            const kurentoConnection = KurentoConnectionSource.get(socket);
+            elements.forEach(element => kurentoConnection.getMediaobjectById(element.id)
+                .then(e => e.getSourceConnections())
+                .then(result => socket.emit('kurento:sourcesInfo', {result}))
+            );
+            callback && callback();
+        } catch (err) {
+            //console.log(err);
+        }
+    }
 }
 
 module.exports = new KurentoController();
