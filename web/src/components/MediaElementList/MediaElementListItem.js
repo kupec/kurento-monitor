@@ -46,6 +46,10 @@ class MediaElementListItem extends Component {
         this.setState({showGraph: !this.state.showGraph});
     }
 
+    isMediaPipeline(element) {
+        return element.type === MEDIA_PIPELINE_NAME;
+    }
+
     render() {
         const {selectedItems, element, nestedItems, nestedClassName, regexp, expended} = this.props;
         const {showGraph} = this.state;
@@ -70,10 +74,9 @@ class MediaElementListItem extends Component {
         const open = expended ? true : null;
         return (
             <div className={nestedClassName}>
-
-                <FlatButton primary
+                {this.isMediaPipeline(element) && <FlatButton primary
                             onClick={this.toggleGraph}
-                            label="Build Graph"/>
+                            label="Build Graph"/>}
                 {showGraph && <Graph element={element} onClose={this.toggleGraph}/>}
                 <ListItem
                     primaryText={primaryText}

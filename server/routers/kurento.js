@@ -5,7 +5,9 @@ class MonitorRouter extends Router {
         super();
         this.events = [
             'kurento:release',
-            'kurento:getSources'
+            'kurento:getSources',
+            'kurento:createElement',
+            'kurento:connectElems'
         ];
     }
 }
