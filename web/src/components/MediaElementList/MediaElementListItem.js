@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {ListItem, Checkbox} from 'material-ui';
+import {ListItem, Checkbox, FlatButton} from 'material-ui';
 import {inNonStandartRegExp} from './PipelinesFiltering';
+import Graph from './Graph';
+const MEDIA_PIPELINE_NAME = 'MediaPipeline';
 
 class MediaElementListItem extends Component {
     static propTypes = {
@@ -14,12 +16,43 @@ class MediaElementListItem extends Component {
         expended: PropTypes.bool
     };
 
+    state = {showGraph: false};
+
+    static getChildrenInfo(element) {
+        if (!element || element.type !== MEDIA_PIPELINE_NAME) return '';
+        let result = ': children - ';
+        if (!element.childrens || element.childrens.length === 0) return result + '0';
+        const childrenTypes = {};
+        element.childrens.forEach(child => {
+          if (!childrenTypes[child.type]) {
+              childrenTypes[child.type] = 1;
+          }  else {
+              childrenTypes[child.type] += 1;
+          }
+        });
+        result += element.childrens.length;
+        const typesNames = Object.keys(childrenTypes);
+        typesNames.forEach(type => {
+            result += `, ${type} - ${childrenTypes[type]}`;
+        });
+        return result;
+    }
+
     onElementChecked(id, event, state) {
         this.props.onElementChecked(id, state);
     }
 
+    toggleGraph = () => {
+        this.setState({showGraph: !this.state.showGraph});
+    }
+
+    isMediaPipeline(element) {
+        return element.type === MEDIA_PIPELINE_NAME;
+    }
+
     render() {
         const {selectedItems, element, nestedItems, nestedClassName, regexp, expended} = this.props;
+        const {showGraph} = this.state;
         const isChecked = selectedItems.indexOf(element.id) > -1;
         const leftCheckBox = (<Checkbox checked={isChecked} onCheck={this.onElementChecked.bind(this, element.id)}/>);
         const formattedName = inNonStandartRegExp(regexp)
@@ -31,15 +64,20 @@ class MediaElementListItem extends Component {
                 Name: <span className="formattedName" dangerouslySetInnerHTML={{__html: formattedName}}/>
             </p>
         );
+        const childrenInfo = MediaElementListItem.getChildrenInfo(element);
         const primaryText = (
             <span>
-                {element.type}
+                {`${element.type}${childrenInfo}`}
                 {element.leaked && <span className="leakedNotification">&nbsp;(possible leaked)</span>}
             </span>
         );
         const open = expended ? true : null;
         return (
             <div className={nestedClassName}>
+                {this.isMediaPipeline(element) && <FlatButton primary
+                            onClick={this.toggleGraph}
+                            label="Build Graph"/>}
+                {showGraph && <Graph element={element} onClose={this.toggleGraph}/>}
                 <ListItem
                     primaryText={primaryText}
                     autoGenerateNestedIndicator={true}
