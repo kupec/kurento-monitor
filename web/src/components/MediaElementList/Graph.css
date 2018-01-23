@@ -1,0 +1,69 @@
+.graphMainContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1500;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(255,255,255,0.95);
+}
+.legendContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: auto;
+    width: auto;
+    padding: 0.5rem;
+    max-width: 10%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+.legendContainer > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialogBodyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.connectButton {
+    overflow: visible !important;
+}
+
+.choosedContainer {
+    position: absolute;
+    top: 150%;
+    display: flex;
+    flex-direction: row;
+}
+
+.choosedContainer > div {
+    display: inline;
+    height: 2rem;
+    max-width: 10rem;
+    min-width: 3rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.choosedContainer > div:nth-child(2), .choosedContainer > div:nth-child(4) {
+    border: 1px solid red;
+}
+
+.legendElem {
+    height: 2rem;
+    width: 2rem;
+    margin: 1rem;
+    border-radius: 2rem;
+}
+
