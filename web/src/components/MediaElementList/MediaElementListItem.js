@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {ListItem, Checkbox} from 'material-ui';
+import {ListItem, Checkbox, FlatButton} from 'material-ui';
 import {inNonStandartRegExp} from './PipelinesFiltering';
+import Graph from './Graph';
 const MEDIA_PIPELINE_NAME = 'MediaPipeline';
 
 class MediaElementListItem extends Component {
@@ -14,6 +15,8 @@ class MediaElementListItem extends Component {
         regexp: PropTypes.any,
         expended: PropTypes.bool
     };
+
+    state = {showGraph: false};
 
     static getChildrenInfo(element) {
         if (!element || element.type !== MEDIA_PIPELINE_NAME) return '';
@@ -39,8 +42,17 @@ class MediaElementListItem extends Component {
         this.props.onElementChecked(id, state);
     }
 
+    toggleGraph = () => {
+        this.setState({showGraph: !this.state.showGraph});
+    }
+
+    isMediaPipeline(element) {
+        return element.type === MEDIA_PIPELINE_NAME;
+    }
+
     render() {
         const {selectedItems, element, nestedItems, nestedClassName, regexp, expended} = this.props;
+        const {showGraph} = this.state;
         const isChecked = selectedItems.indexOf(element.id) > -1;
         const leftCheckBox = (<Checkbox checked={isChecked} onCheck={this.onElementChecked.bind(this, element.id)}/>);
         const formattedName = inNonStandartRegExp(regexp)
@@ -62,6 +74,10 @@ class MediaElementListItem extends Component {
         const open = expended ? true : null;
         return (
             <div className={nestedClassName}>
+                {this.isMediaPipeline(element) && <FlatButton primary
+                            onClick={this.toggleGraph}
+                            label="Build Graph"/>}
+                {showGraph && <Graph element={element} onClose={this.toggleGraph}/>}
                 <ListItem
                     primaryText={primaryText}
                     autoGenerateNestedIndicator={true}

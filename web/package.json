@@ -1,6 +1,6 @@
 {
   "name": "kurento-monitor",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Kurento monitoring tool",
   "repository": "https://github.com/kupec/kurento-monitor.git",
   "author": "kupec",
@@ -12,6 +12,7 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-graph-vis": "^1.0.2",
     "react-tap-event-plugin": "^2.0.1",
     "socket.io-client": "^1.7.3",
     "socketio-wildcard": "^0.4.0",
